@@ -87,9 +87,9 @@ def get_model():
         layers.MaxPooling2D((2, 2)),
         layers.Conv2D(128, (3, 3), activation='relu', input_shape=(IMG_WIDTH, IMG_HEIGHT, 3)),
         layers.MaxPooling2D((2, 2)),
+        layers.Dropout(.2),
         layers.Flatten(),
         layers.Dense(512, activation='relu'),
-        layers.Dropout(.2),
         layers.Dense(256, activation='relu'),
         # layers.Dense(64, activation='relu'),
         layers.Dense(NUM_CATEGORIES, activation="sigmoid")
