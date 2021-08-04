@@ -1,5 +1,6 @@
 from classifier import *
 
+
 # CONSTANTS ------------------------------------------------------------------------------------------------------------
 FIRE_TEST = os.path.join(parent_dir(os.getcwd()), 'assets', 'testing', 'fire_images')
 FIRE_TRAIN = os.path.join(parent_dir(os.getcwd()), 'assets', 'training', 'fire_images')
@@ -17,6 +18,7 @@ def test(model, path):
     num_imgs = count_files(path)
     for i in range(1, num_imgs+1):
         img = os.path.join(path, f'{i}.jpg')
+        print(f"Testing image: {img}")
         classification, score = classify(img, model)
         # print(classification)
         if classification == correct_class:
