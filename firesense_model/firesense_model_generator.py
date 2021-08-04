@@ -70,8 +70,8 @@ def load_data(data_dir):
     images = []
     labels = []
     label = 1
-    for i in range(1,756):
-        img_name = f"fire.{i}.png"
+    for fire_img in range(1, 756):
+        img_name = f"{fire_img}.png"
         img_path = os.path.join(data_dir, "fire_images", img_name)
         print(f"Loading image: {img_path}")
         print(f"Image label: {label}")
@@ -80,8 +80,8 @@ def load_data(data_dir):
         images.append(img)
         labels.append(label)
     label = 0
-    for j in range(1,245):
-        img_name = f"non_fire.{j}.png"
+    for non_fire_img in range(1, 245):
+        img_name = f"{non_fire_img}.png"
         img_path = os.path.join(data_dir, "non_fire_images", img_name)
         print(f"Loading image: {img_path}")
         print(f"Image label: {label}")
