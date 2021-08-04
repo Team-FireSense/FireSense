@@ -123,7 +123,8 @@ def main():
     if save:
         filename = "model"
         model.save(filename)
-        print(f"\nModel saved to {os.path.join(parent_dir(CWD), filename)}.")
+        location = os.path.join(parent_dir(CWD), "firesense_model",  filename)
+        print(f"\nModel saved to {location}.")
     else:
         print("\nModel not saved.")
 
