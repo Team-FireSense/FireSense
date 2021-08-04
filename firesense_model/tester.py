@@ -16,14 +16,16 @@ def test(model, path):
         correct_class = 'not a fire'
     correct_count = 0
     num_imgs = count_files(path)
+    print(f"\nTesting Images from {path} ...")
     for i in range(1, num_imgs+1):
         img = os.path.join(path, f'{i}.jpg')
-        print(f"Testing image: {img}")
+        # print(f"Testing image: {img}")
         classification, score = classify(img, model)
         # print(classification)
         if classification == correct_class:
             correct_count += 1
             # print("correct classification")
+    print("Testing Complete.")
     accuracy = correct_count / num_imgs
     return accuracy
 
@@ -38,7 +40,7 @@ def rename_all():
 def main():
     model = load_model(MODEL)
     rename_all()
-    print("\nAll filenames are now in the correct format\n")
+    print("\nAll filenames are in the correct format.")
     fire_train_accuracy = round(test(model, FIRE_TRAIN)*100, 2)
     fire_test_accuracy = round(test(model, FIRE_TEST) * 100, 2)
     non_fire_train_accuracy = round(test(model, NON_FIRE_TRAIN)*100, 2)

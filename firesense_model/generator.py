@@ -1,43 +1,19 @@
 import cv2
 import numpy as np
 import os
-import sys
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from directory_manager import parent_dir
+from misc import get_response
 
+# CONSTANTS ------------------------------------------------------------------------------------------------------------
 EPOCHS = 10
 IMG_WIDTH = 30
 IMG_HEIGHT = 30
 NUM_CATEGORIES = 2
 TEST_SIZE = 0.4
-
-
-def main():
-    directory = os.path.join(parent_dir(os.getcwd()), "assets", "training")
-    print(directory)
-    # Get image arrays and labels for all image files
-    images, labels = load_data(directory)
-
-    # Split data into training and testing sets
-    labels = tf.keras.utils.to_categorical(labels)
-    x_train, x_test, y_train, y_test = train_test_split(
-        np.array(images), np.array(labels), test_size=TEST_SIZE
-    )
-
-    # Get a compiled neural network
-    model = get_model()
-
-    # Fit model on training data
-    model.fit(x_train, y_train, epochs=EPOCHS)
-
-    # Evaluate neural network performance
-    model.evaluate(x_test,  y_test, verbose=2)
-
-    # Save model to file
-    filename = "model"
-    model.save(filename)
-    print(f"\nModel saved to {filename}.")
+CWD = os.getcwd()
+# ----------------------------------------------------------------------------------------------------------------------
 
 
 def get_image_ndarray(path):
@@ -70,30 +46,31 @@ def load_data(data_dir):
     images = []
     labels = []
     label = 1
+    print("\nLoading Data...\n")
     for fire_img in range(1, 756):
-        img_name = f"{fire_img}.png"
+        img_name = f"{fire_img}.jpg"
         img_path = os.path.join(data_dir, "fire_images", img_name)
-        print(f"Loading image: {img_path}")
-        print(f"Image label: {label}")
+        # print(f"Loading image: {img_path}")
+        # print(f"Image label: {label}")
         img = get_image_ndarray(img_path)
-        print(f"Shape: {img.shape}")  # should be (30, 30, 3)
+        # print(f"Shape: {img.shape}")  # should be (30, 30, 3)
         images.append(img)
         labels.append(label)
     label = 0
     for non_fire_img in range(1, 245):
-        img_name = f"{non_fire_img}.png"
+        img_name = f"{non_fire_img}.jpg"
         img_path = os.path.join(data_dir, "non_fire_images", img_name)
-        print(f"Loading image: {img_path}")
-        print(f"Image label: {label}")
+        # print(f"Loading image: {img_path}")
+        # print(f"Image label: {label}")
         img = get_image_ndarray(img_path)
-        print(f"Shape: {img.shape}")  # should be (30, 30, 3)
+        # print(f"Shape: {img.shape}")  # should be (30, 30, 3)
         images.append(img)
         labels.append(label)
-    print(len(images))
-    print(len(labels))
-    print("\nLoading of data now complete.")
+    # print(len(images))
+    # print(len(labels))
+    print("Loading of data now complete.")
     print("\n----------------------------------------------------\n")
-    return (images, labels)
+    return tuple([images, labels])
 
 
 def get_model():
@@ -125,6 +102,30 @@ def get_model():
         metrics=["accuracy"]
     )
     return model
+
+
+def main():
+    directory = os.path.join(parent_dir(CWD), "assets", "training")
+    # print(directory)
+    # Get image arrays and labels for all image files
+    images, labels = load_data(directory)
+    # Split data into training and testing sets
+    labels = tf.keras.utils.to_categorical(labels)
+    x_train, x_test, y_train, y_test = train_test_split(np.array(images), np.array(labels), test_size=TEST_SIZE)
+    # Get a compiled neural network
+    model = get_model()
+    # Fit model on training data
+    model.fit(x_train, y_train, epochs=EPOCHS)
+    # Evaluate neural network performance
+    model.evaluate(x_test,  y_test, verbose=2)
+    # Save model to file
+    save = get_response("\nSave Model? (Y/N): ")
+    if save:
+        filename = "model"
+        model.save(filename)
+        print(f"\nModel saved to {os.path.join(parent_dir(CWD), filename)}.")
+    else:
+        print("\nModel not saved.")
 
 
 if __name__ == "__main__":
