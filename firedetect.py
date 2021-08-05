@@ -41,7 +41,7 @@ async def run():
 
             frame = video.frame()
             cv2.imshow('frame', frame)
-            print('test')
+           
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
