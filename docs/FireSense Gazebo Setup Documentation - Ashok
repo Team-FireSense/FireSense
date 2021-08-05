@@ -1,0 +1,29 @@
+1. download the world from this github https://github.com/Team-FireSense/FireSense/upload/main/docs 
+
+2. download fireduck. 
+
+3. Put forestfires.world into src/firmware/tools/sitl_gazebo/worlds. 
+
+(If you follow the instructions from install_run_simulation.md - ashok, it will be /home/user/PX4-Autopilot/Tools/sitl_gazebo/worlds)
+
+3.5: Also search sitl_target in home directory (the file will be called sitl_target.cmake) and add forestfires to the list of all the environments (like yosemite and baylands) This will be under the "set(worlds" section
+
+
+Step 4. copy and paste the fireduck folder into src/firmware/tools/sitl_gazebo/models
+
+
+When downloading the world from github, download TomoCoder123's entire upload as a ZIP to the code repo
+
+----------------------------------------------------------------------------------
+Running Drone Simulations in Gazebo:
+
+Once Gazebo and PX4 are installed, do this to run the forest fire world with fireducks in it with the iris sitl drone in it too:
+
+sathiya@SKL1:~/PX4-Autopilot$ make px4_sitl gazebo___forestfires
+
+It will boot gazebo with the drone, forest, and fires in  it.
+
+Once Gazebo and MAVSDK are installed:
+navigate to this directory and run: "sathiya@SKL1:~/MAVSDK-Python/examples$ python3 mission.py"
+
+This will start the mission for the drone and it will fly around
