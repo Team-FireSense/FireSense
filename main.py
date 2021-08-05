@@ -24,10 +24,12 @@ async def run():
         await drone.offboard.set_position_ned(PositionNedYaw(0.0, 0.0, 0.0, 0.0))
         try:
             await drone.offboard.start()
-
             print("Starting")
             await drone.action.set_takeoff_altitude(20)
             await drone.action.takeoff()
+            await drone.action.do_orbit(0,0.5)
+            # save camera feed to assets/to_classify
+            # classify camera feed
         except OffboardError as error:
             print(f"Starting offboard mode failed with error code: {error._result.result}")
             print("-- Disarming")
@@ -38,13 +40,10 @@ async def run():
             # Wait for the next frame
             if not video.frame_available():
                 continue
-
             frame = video.frame()
             cv2.imshow('frame', frame)
-
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
         N_coord = 0
         E_coord = 0
         D_coord = -10  # -HOVERING_ALTITUDE
@@ -57,5 +56,3 @@ if __name__ == "__main__":
     loop.run_until_complete(run())
     path = os.path.join(directory_manager.parent_dir(os.getcwd()), 'assets', 'assets/to_classify')
     print(f"Directory where frames will be saved: {path}")
-
-
