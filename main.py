@@ -5,6 +5,9 @@ from mavsdk.offboard import (OffboardError, PositionNedYaw)
 from mavsdk.mission import (MissionItem, MissionPlan)
 from utils import cameragazebo
 from utils import directory_manager
+from mavsdk.action import OrbitYawBehavior
+from enum import Enum
+from mavsdk.telemetry import Position
 import os
 
 
@@ -27,7 +30,14 @@ async def run():
             print("Starting")
             await drone.action.set_takeoff_altitude(15)
             await drone.action.takeoff()
-            # await drone.action.do_orbit(0,0.5)
+            # for i in range(120):
+                # turn 3 degrees (approx)
+
+            await asyncio.sleep(10)
+            # gps = [Position().latitude_deg, Position().longitude_deg,  Position().absolute_altitude_m]
+            # print(gps)
+            behavior = OrbitYawBehavior(3)
+            await drone.action.do_orbit(0.1,1, behavior, 0,0,15)
             # save camera feed to assets/to_classify
             # classify camera feed
         except OffboardError as error:
