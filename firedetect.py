@@ -4,6 +4,8 @@ from mavsdk import System
 from mavsdk.offboard import (OffboardError, PositionNedYaw)
 from mavsdk.mission import (MissionItem, MissionPlan)
 from cameragazebo import Video
+from directory_manager import parent_dir
+import os
 
 
 async def run():
@@ -14,7 +16,6 @@ async def run():
     # if vid_cam.isOpened() is False:
     #     print('[ERROR] Couldnt open the camera.')
     #     return
-
     async for state in drone.core.connection_state():
         if state.is_connected:
             print("Drone discovered")
@@ -23,32 +24,39 @@ async def run():
         await drone.offboard.set_position_ned(PositionNedYaw(0.0, 0.0, 0.0, 0.0))
         try:
             await drone.offboard.start()
+
             print("Starting")
+            await drone.action.set_takeoff_altitude(20)
+            await drone.action.takeoff()
         except OffboardError as error:
             print(f"Starting offboard mode failed with error code: {error._result.result}")
             print("-- Disarming")
             await drone.action.disarm()
             return
+        video = Video()
+        while True:
+            # Wait for the next frame
+            if not video.frame_available():
+                continue
+
+            frame = video.frame()
+            cv2.imshow('frame', frame)
+            print('test')
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+
         N_coord = 0
         E_coord = 0
         D_coord = -10  # -HOVERING_ALTITUDE
         yaw_angle = 0
-        await drone.offboard.set_position_ned(PositionNedYaw(N_coord, E_coord, D_coord, yaw_angle))
+
+        #await drone.offboard.set_position_ned(PositionNedYaw(N_coord, E_coord, D_coord, yaw_angle))
 
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
-
-    video = Video()
     loop.run_until_complete(run())
-    # while True:
-    #     # Wait for the next frame
-    #     if not video.frame_available():
-    #         continue
-    #
-    #     frame = video.frame()
-    #     cv2.imshow('frame', frame)
-    #     print('test')
-    #     if cv2.waitKey(1) & 0xFF == ord('q'):
-    #         break
+    path = os.path.join(parent_dir(os.getcwd()), 'assets', 'assets/to_classify')
+    print(f"Directory where frames will be saved: {path}")
+
 
