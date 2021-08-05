@@ -3,7 +3,7 @@ import cv2
 from mavsdk import System
 from mavsdk.offboard import (OffboardError, PositionNedYaw)
 from mavsdk.mission import (MissionItem, MissionPlan)
-from cameragazebo import Video
+from utils import cameragazebo
 from utils import directory_manager
 import os
 
@@ -27,7 +27,7 @@ async def run():
             print("Starting")
             await drone.action.set_takeoff_altitude(20)
             await drone.action.takeoff()
-            await drone.action.do_orbit(0,0.5)
+            # await drone.action.do_orbit(0,0.5)
             # save camera feed to assets/to_classify
             # classify camera feed
         except OffboardError as error:
@@ -35,7 +35,7 @@ async def run():
             print("-- Disarming")
             await drone.action.disarm()
             return
-        video = Video()
+        video = cameragazebo.Video()
         while True:
             # Wait for the next frame
             if not video.frame_available():
