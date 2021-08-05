@@ -25,7 +25,7 @@ async def run():
         try:
             await drone.offboard.start()
             print("Starting")
-            await drone.action.set_takeoff_altitude(20)
+            await drone.action.set_takeoff_altitude(15)
             await drone.action.takeoff()
             # await drone.action.do_orbit(0,0.5)
             # save camera feed to assets/to_classify
