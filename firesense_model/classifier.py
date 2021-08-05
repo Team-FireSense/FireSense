@@ -1,12 +1,13 @@
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
-from directory_manager import *
+import os
+from utils import directory_manager
 
 
 # CONSTANTS ------------------------------------------------------------------------------------------------------------
 CLASS_NAMES = ['not a fire', 'a fire']
-MODEL = os.path.join(parent_dir(os.getcwd()), 'firesense_model', 'model')
+MODEL = os.path.join(directory_manager.parent_dir(os.getcwd()), 'firesense_model', 'model')
 MESSAGE = "This image is most likely {} with a {:.2f}% confidence."
 # ----------------------------------------------------------------------------------------------------------------------
 

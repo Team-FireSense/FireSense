@@ -4,7 +4,7 @@ from mavsdk import System
 from mavsdk.offboard import (OffboardError, PositionNedYaw)
 from mavsdk.mission import (MissionItem, MissionPlan)
 from cameragazebo import Video
-from directory_manager import parent_dir
+from utils import directory_manager
 import os
 
 
@@ -49,14 +49,13 @@ async def run():
         E_coord = 0
         D_coord = -10  # -HOVERING_ALTITUDE
         yaw_angle = 0
-
-        #await drone.offboard.set_position_ned(PositionNedYaw(N_coord, E_coord, D_coord, yaw_angle))
+        # await drone.offboard.set_position_ned(PositionNedYaw(N_coord, E_coord, D_coord, yaw_angle))
 
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run())
-    path = os.path.join(parent_dir(os.getcwd()), 'assets', 'assets/to_classify')
+    path = os.path.join(directory_manager.parent_dir(os.getcwd()), 'assets', 'assets/to_classify')
     print(f"Directory where frames will be saved: {path}")
 
 
