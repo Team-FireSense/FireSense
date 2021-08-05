@@ -24,9 +24,8 @@ async def run():
         await drone.offboard.set_position_ned(PositionNedYaw(0.0, 0.0, 0.0, 0.0))
         try:
             await drone.offboard.start()
-
             print("Starting")
-            await drone.action.set_takeoff_altitude(20)
+            await drone.action.set_takeoff_altitude(15)
             await drone.action.takeoff()
         except OffboardError as error:
             print(f"Starting offboard mode failed with error code: {error._result.result}")
@@ -38,13 +37,10 @@ async def run():
             # Wait for the next frame
             if not video.frame_available():
                 continue
-
             frame = video.frame()
             cv2.imshow('frame', frame)
-           
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-
         N_coord = 0
         E_coord = 0
         D_coord = -10  # -HOVERING_ALTITUDE
