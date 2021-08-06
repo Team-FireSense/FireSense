@@ -8,7 +8,8 @@ using UnityEngine.Tilemaps;
 
 
 public class droneScript : MonoBehaviour
-{
+{   
+    //Obtains drone data and updates position from DroneControl
     public Grid grid;
     
     public Vector2 pos;
