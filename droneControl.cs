@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class droneControl : MonoBehaviour
 {
+    //controls each indivudal drone with positions as childs of Transform.
     public Grid grid;
     
     public Tilemap map;
@@ -25,6 +26,7 @@ public class droneControl : MonoBehaviour
                var pos = new Vector2(child.position.x,child.position.y);
                drones.Add(pos);
                print(pos);
+               //Randomizes velocity to begin PSO
                velocities.Add(new Vector2(UnityEngine.Random.Range(-0.02f,0.02f),UnityEngine.Random.Range(-0.02f,0.02f)));
             }
         pso = new PSO(drones,velocities,fitness_function);
@@ -41,6 +43,7 @@ public class droneControl : MonoBehaviour
         foreach(Vector2 pos in pso.particles){
             list.Add(pos);
         }
+        //stores positions of drones as a list
         drones = list;
 
     }
@@ -160,15 +163,7 @@ public class PSO{
             r_1.Add(new Vector2(rand,rand));
         }
         for(var i = 0; i<newVelocities.Count; i++){
-            // Debug.Log("index: " + i);
-            // Debug.Log("r_1 : "+ r_1[i]);
-            // Debug.Log("c_1: "+ c_1);
-            // Debug.Log("pbest: "+ pbests[i]);
-            // Debug.Log("particles: "+ particles[i]);
-            // Debug.Log("first Factor: "+c_1*r_1[i].x);
-            // Debug.Log("Second Factor: "+(pbests[i].x-particles[i].x));
-            // Debug.Log("Product : "+c_1*r_1[i].x*(pbests[i].x-particles[i].x));
-            // Debug.Log("newVelocities[i] : "+newVelocities[i]);
+           //PSO algorithm with hyperparemters c_1, r_1.
 
             var vel = new Vector2(c_1*r_1[i].x*(pbests[i].x-particles[i].x), this.c_1*r_1[i].y*(this.pbests[i].y-this.particles[i].y));
 
@@ -235,6 +230,7 @@ public class PSO{
         var fits = fitness_function(this.particles) ;
         
         for (int i = 0; i<this.particles.Count; i++){
+            //Update drone behavior uing fitness function using loop.
             Debug.Log("fit: "+i+" i======"+fits[i]);
              if (fits[i] <= this.p_bests_values[i]){
                 Debug.Log(fits[i]);
