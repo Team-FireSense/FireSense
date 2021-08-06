@@ -8,7 +8,11 @@ from utils import directory_manager
 from mavsdk.action import OrbitYawBehavior
 from enum import Enum
 from mavsdk.telemetry import Position
+from firesense_model import classifier
 import os
+
+FIRESENSE = os.getcwd()
+PATH = os.path.join(os.getcwd(), 'assets', 'to_classify')
 
 
 async def run():
@@ -28,24 +32,70 @@ async def run():
         try:
             await drone.offboard.start()
             print("Starting")
-            await drone.action.set_takeoff_altitude(15)
+            await drone.action.set_takeoff_altitude(12)
             await drone.action.takeoff()
-            # for i in range(120):
-                # turn 3 degrees (approx)
-
             await asyncio.sleep(10)
-            # gps = [Position().latitude_deg, Position().longitude_deg,  Position().absolute_altitude_m]
-            # print(gps)
+            fire_found = False
             behavior = OrbitYawBehavior(3)
-            await drone.action.do_orbit(0.1,1, behavior, 0,0,15)
-            # save camera feed to assets/to_classify
-            # classify camera feed
+            count = 0
+            video = cameragazebo.Video()
+
+            while not fire_found:
+                await drone.action.do_orbit(0.1,1, behavior, 0,0,12)
+                await asyncio.sleep(10)
+                # save camera feed to assets/to_classify
+                frame = video.frame()
+                img_path = os.path.join(PATH, str(count)+".jpg")
+                print("\n"+img_path)
+                if not video.frame_available():
+                    print("Frame not available")
+                    continue
+                else:
+                    count += 1
+                    print("count: " + str(count))
+                # cv2.imshow('frame', frame)
+                cv2.imwrite(img_path, frame)
+                # classify camera feed
+                classification, confidence = classifier.classify(img_path, classifier.MODEL)
+                # if classification is 'fire', then  set fire_found to True as we've now found the fire and can start movign in this direction
+                if classification == "a fire":
+                    await drone.action.hold()
+                    print("Fire detected")
+                    fire_found = True
+                else:
+                    print("No fire detected")
+
+            count = 0
+            while fire_found:
+                await drone.action.hold()
+                # Move straight ahead by a small amount
+                #await drone.action.go_to_location()
+                # save camera feed to assets/to_classify
+                frame = video.frame()
+                img_path = os.path.join(PATH, str(count)+".jpg")
+                print(img_path)
+                if not video.frame_available():
+                    print("Frame available")
+                    continue
+                else:
+                    count += 1
+                cv2.imwrite(img_path, frame)
+                # classify camera feed
+                classification, confidence = classifier.classify(img_path, classifier.MODEL)
+                # if classification is 'not fire' then we've passed the fire and we can stop
+                if classification == "not a fire":
+                    await drone.action.hold()
+                    print("Arrived at fire")
+                    fire_found = False
+                else:
+                    print("Going towards fire")
+                count += 1
         except OffboardError as error:
             print(f"Starting offboard mode failed with error code: {error._result.result}")
             print("-- Disarming")
             await drone.action.disarm()
             return
-        video = cameragazebo.Video()
+
         while True:
             # Wait for the next frame
             if not video.frame_available():
@@ -64,5 +114,4 @@ async def run():
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run())
-    path = os.path.join(directory_manager.parent_dir(os.getcwd()), 'assets', 'assets/to_classify')
-    print(f"Directory where frames will be saved: {path}")
+    print(f"Directory where frames will be saved: {PATH}")
