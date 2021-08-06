@@ -5,7 +5,7 @@ using System;
 using UnityEngine.Tilemaps;
 
 public class renderScans : MonoBehaviour
-{
+{   //Used to render each drone and display movement.
     public Grid grid;
 
     public Tilemap map;
