@@ -6,3 +6,5 @@ Link to our presentation: https://docs.google.com/presentation/d/1ISEjLjc6vYDZv4
 
 Link to presentation template: https://docs.google.com/presentation/d/1mIelCbXvVgnPmey2hWWVgMMyVJeBUDuyGiDeRLctwGE/edit?usp=sharing
 The best fire detection drone >:)
+
+Link to Final Report Google Document: https://docs.google.com/document/d/1tQ_4BB9be-DbQttiOq7NC0D3Umjxn4ryi3X08fWcksY/edit?usp=sharing
