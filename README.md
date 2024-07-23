@@ -111,6 +111,12 @@ At the core, the project aims to act as an early warning system for authorities 
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
+## Links
+
+FireSense and PSO swarm Demo Videos can be viewed from he following links:
+Our Presentation: https://docs.google.com/presentation/d/1ISEjLjc6vYDZv4VXg_lPsr7hKHoTWKLm6OWkn4-Bzmw/edit?usp=sharing
+Final Report Google Document: https://docs.google.com/document/d/1tQ_4BB9be-DbQttiOq7NC0D3Umjxn4ryi3X08fWcksY/edit?usp=sharing
+
 ## Acknowledgments
 
 We would like to thank our mentors and the open-source community for their support and resources that made this project possible.
