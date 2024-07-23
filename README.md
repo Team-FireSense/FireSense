@@ -113,9 +113,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Links
 
-FireSense and PSO swarm Demo Videos can be viewed from he following links:
-Our Presentation: https://docs.google.com/presentation/d/1ISEjLjc6vYDZv4VXg_lPsr7hKHoTWKLm6OWkn4-Bzmw/edit?usp=sharing
-Final Report Google Document: https://docs.google.com/document/d/1tQ_4BB9be-DbQttiOq7NC0D3Umjxn4ryi3X08fWcksY/edit?usp=sharing
+FireSense and PSO swarm Demo Videos can be viewed from the following links:
+- [Presentation](https://docs.google.com/presentation/d/1ISEjLjc6vYDZv4VXg_lPsr7hKHoTWKLm6OWkn4-Bzmw/edit?usp=sharing)
+- [Final Report](https://docs.google.com/document/d/1tQ_4BB9be-DbQttiOq7NC0D3Umjxn4ryi3X08fWcksY/edit?usp=sharing)
 
 ## Acknowledgments
 
